@@ -8,7 +8,7 @@ Opensource OpenWrt snapshot firmwares with performance optimizations and SFE bui
 
 Builds with all kmods
 
-## How to build
+## How to build - local
 1. Install [prerequisites](https://openwrt.org/docs/guide-developer/toolchain/install-buildsystem)
 2. git clone this repo
 3. (Optional) comment out git checkout in build_local.sh if you want to try to build newer build, by default it builds up to 2026-03-04 commit
@@ -17,10 +17,14 @@ Builds with all kmods
 6. cd into openwrt dir and run ```make defconfig download clean world```
 7. build will be in bin/targets
 
+## How to build - github actions
+1. Fork my repo
+2. Duplicate one of workflow files (release-24.10.5 or snapshot)and change name and params to matching your device
+
 ## Download
 
 On my fork of gwlim repo there are builds for:
-- tplink archer c7 v2 (tested)
+- tplink archer c7 v2 (in testing)
 
 See [releases](https://github.com/4meters/openwrt-optimized-builds/releases)
 
