@@ -24,13 +24,13 @@ on:
 
 env:
   REPO_URL: https://git.openwrt.org/openwrt/openwrt.git
-  REPO_BRANCH: master
+  REPO_BRANCH: openwrt-24.10
   BUILDROOT: ${{ github.workspace }}/openwrt
   CUSTOM_SCRIPT: ${{ github.workspace }}/build_openwrt.sh
   CUSTOM_DIR: ${{ github.workspace }}/patch
   OPENWRT_ISA: mips32r2
   OPENWRT_TARGET: ath79
-  OPENWRT_SUBTARGET: ath79_generic
+  OPENWRT_SUBTARGET: generic
   OPENWRT_DEVICE_MODEL: tplink_archer-c7-v4
   OPENWRT_CPU_CFLAG: -mno-branch-likely
   OPENWRT_CPU_NUMPROC: 1
@@ -67,7 +67,10 @@ jobs:
       uses: actions/checkout@main
 
     - name: Download the sources
-      run: git clone --branch $REPO_BRANCH $REPO_URL
+      run: |
+        git clone --branch $REPO_BRANCH $REPO_URL --single-branch
+        cd ./openwrt
+        git checkout 9c04f527c62b38faf25e39e958679d2c717c618d
 
     - name: Set default target
       run: |

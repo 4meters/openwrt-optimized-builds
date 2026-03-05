@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 OPENWRT_ISA=$(grep "OPENWRT_ISA:" $@ | awk -F ': '  '{print $2}')
 OPENWRT_ARCH=$(grep "OPENWRT_ARCH:" $@ | awk -F ': '  '{print $2}')
@@ -10,7 +10,16 @@ OPENWRT_CPU_CFLAG_ARCH=$(grep "OPENWRT_CPU_CFLAG_ARCH:" $@ | awk -F ': '  '{prin
 OPENWRT_CPU_CFLAG_ARCH_OPTIMIZATION=$(grep "OPENWRT_CPU_CFLAG_ARCH_OPTIMIZATION:" $@ | awk -F ': '  '{print $2}')
 OPENWRT_CPU_NUMPROC=$(grep "OPENWRT_CPU_NUMPROC:" $@ | awk -F ': '  '{print $2}')
 
-git clone --depth=1 https://github.com/openwrt/openwrt.git
+#commented since current main branch is based on kernel 6.12, we will use 24.10 with kernel 6.6
+#git clone --depth=1 https://github.com/openwrt/openwrt.git
+
+#clone openwrt-24.10 branch
+git clone https://github.com/openwrt/openwrt.git --branch openwrt-24.10 --single-branch
+
+#patches adjusted up to 9c04f... commit (2025-03-04) if you want to give a try for newer build then comment 3 lines below
+cd ./openwrt
+git checkout 9c04f527c62b38faf25e39e958679d2c717c618d
+cd ..
 
 sed -i 's/git.openwrt.org\/feed/github.com\/openwrt/g' ./openwrt/feeds.conf.default
 sed -i 's/git.openwrt.org\/feed/github.com\/openwrt/g' ./openwrt/feeds.conf.default
@@ -83,5 +92,3 @@ fi
 
 rm -rf patch/
 mv backup/ patch
-
-ln -s ~/Downloads/dl openwrt/dl

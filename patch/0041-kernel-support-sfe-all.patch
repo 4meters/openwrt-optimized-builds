@@ -201,7 +201,7 @@
 +
 --- /dev/null	2024-12-26 00:11:56.425999992 +0800
 +++ b/target/linux/generic/hack-6.6/960179-bridge-Add-new-bridge-APIs-needed-for-network-HW-acc.patch	2024-12-31 22:40:52.966873771 +0800
-@@ -0,0 +1,161 @@
+@@ -0,0 +1,162 @@
 +From 6447fffde1be8235684aaa6b94e016e9c18f7776 Mon Sep 17 00:00:00 2001
 +From: Murat Sezgin <quic_msezgin@quicinc.com>
 +Date: Wed, 10 May 2023 13:15:19 -0700
@@ -243,10 +243,10 @@
 +
 +--- a/include/linux/if_bridge.h
 ++++ b/include/linux/if_bridge.h
-+@@ -71,6 +71,14 @@ void brioctl_set(int (*hook)(struct net
++@@ -70,6 +70,15 @@ void brioctl_set(int (*hook)(struct net *net, unsigned int cmd,
 + 			     void __user *uarg));
-+ int br_ioctl_call(struct net *net, struct net_bridge *br, unsigned int cmd,
-+ 		  struct ifreq *ifr, void __user *uarg);
++ int br_ioctl_call(struct net *net, unsigned int cmd, void __user *uarg);
++ 
 ++extern struct net_device *br_port_dev_get(struct net_device *dev,
 ++					  unsigned char *addr);
 ++extern void br_refresh_fdb_entry(struct net_device *dev, const char *addr);
@@ -255,9 +255,10 @@
 ++extern struct net_bridge_fdb_entry *br_fdb_has_entry(struct net_device *dev,
 ++						     const char *addr,
 ++						     __u16 vid);
-+ 
+++
 + #if IS_ENABLED(CONFIG_BRIDGE) && IS_ENABLED(CONFIG_BRIDGE_IGMP_SNOOPING)
 + int br_multicast_list_adjacent(struct net_device *dev,
++ 			       struct list_head *br_ip_list);
 +--- a/net/bridge/br_fdb.c
 ++++ b/net/bridge/br_fdb.c
 +@@ -914,6 +914,44 @@ void br_fdb_update(struct net_bridge *br

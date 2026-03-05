@@ -1,0 +1,13 @@
+OPENWRT_ISA: mips32r2
+OPENWRT_ARCH: mips_24kc
+OPENWRT_TARGET: ath79
+OPENWRT_SUBTARGET: generic
+OPENWRT_DEVICE_MODEL: tplink_archer-c7-v2
+
+OPENWRT_CPU_CFLAG: -mno-branch-likely
+OPENWRT_CPU_CFLAG_OPTIMIZATION: -mno-branch-likely
+
+OPENWRT_CPU_CFLAG_ARCH: -mips32r2 -mtune=74kc
+OPENWRT_CPU_CFLAG_ARCH_OPTIMIZATION: -mips32r2 -mtune=74kc -mno-mips16 -mframe-header-opt
+
+OPENWRT_CPU_NUMPROC: 1
